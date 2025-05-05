@@ -17,10 +17,11 @@ let package = Package(
         ),
     ],
     targets: [
+        .target(name: "_ExceptionCatcher", path: "Sources/ExceptionCatcher", publicHeadersPath: "", cSettings: [.headerSearchPath(".")]),
         .target(name: "ITKSuperBuilder"),
         .target(
             name: "InterposeKit",
-            dependencies: ["ITKSuperBuilder"]
+            dependencies: ["ITKSuperBuilder", "_ExceptionCatcher"]
         ),
         .testTarget(
             name: "InterposeKitTests",

@@ -101,7 +101,8 @@ public enum InterposeError: Error, @unchecked Sendable {
         selector: Selector,
         underlyingError: NSError
     )
-
+    
+    case unsupportedKVO(object: NSObject)
 }
 
 extension InterposeError: Equatable {
@@ -186,6 +187,14 @@ extension InterposeError: Equatable {
         case .hookInFailedState:
             switch rhs {
             case .hookInFailedState:
+                return true
+            default:
+                return false
+            }
+            
+        case .unsupportedKVO:
+            switch rhs {
+            case .unsupportedKVO:
                 return true
             default:
                 return false

@@ -40,6 +40,9 @@ internal enum ObjectSubclassManager {
             return installedSubclass
         }
         
+        // Add a dummy KVO observer ("Object" -> "NSKVONotifying_Object")
+        try object.wrapKVOIfNeeded()
+        
         // Otherwise, create a dynamic subclass by generating a unique name and registering it
         // with the runtime.
         let subclass: AnyClass = try self.makeSubclass(for: object)
@@ -88,6 +91,9 @@ internal enum ObjectSubclassManager {
         // validate this explicitly, as `objc_disposeClassPair(...)` offers no feedback mechanism
         // and will silently fail if the subclass is still in use.
         objc_disposeClassPair(dynamicSubclass)
+        
+        // Remove dummy KVO observer ("NSKVONotifying_Object" -> "Object")
+        object.unwrapKVO()
     }
     
     // ============================================================================ //
